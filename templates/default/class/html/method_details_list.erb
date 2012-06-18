@@ -2,9 +2,20 @@
   <div id="Services" class="method_details_list">
     <% @meths.each_with_index do |meth, i| %>
 		<div class="method">
+			<h3 class="resource"><strong><%= meth.tag(:resource).text %></strong> [<%= meth.tag(:action).text %>]</h3>
 			<p class="method_desc"><%= meth.docstring %></p>
-			<h3 class="resource_url"><strong><%= meth.tag(:resource).text %></strong> [<%= meth.tag(:action).text %>]</h3>
-
+			<% if meth.tags(:url).size > 0 %>
+				<div class="url">
+					<% meth.tags(:url).each do |url| %>
+						<div class="url_method">
+							<%= meth.tag(:action).text %>
+						</div>
+						<div class="url_location">
+							<%= url.text %>
+						</div>
+					<% end %>
+				</div>
+			<% end %>
 			<div class="parameters">	
 				<% if meth.tags(:required).size > 0 %>
 					<div class="required">
@@ -14,7 +25,7 @@
 								<li>
 									<span class="name"><%= required.name%></span>
 									<span class="type"><%= required.types.join%></span>
-									<span class="text"><%= required.text%></span>
+									<span class="text"><%= htmlify required.text%></span>
 								</li>
 							</ul>
 						<% end %>
@@ -29,7 +40,7 @@
 								<li>
 									<span class="name"><%= optional.name%></span>
 									<span class="type"><%= optional.types.join%></span>
-									<span class="text"><%= optional.text%></span>
+									<span class="text"><%= htmlify optional.text%></span>
 								</li>
 							</ul>
 						<% end %>
@@ -45,7 +56,7 @@
 							<li>
 								<span class="name"><%= response_field.name%></span>
 								<span class="type"><%= response_field.types.join%></span>
-								<span class="text"><%= response_field.text%></span>
+								<span class="text"><%= htmlify response_field.text%></span>
 							</li>
 						</ul>
 					<% end %>
@@ -54,7 +65,7 @@
 			
 			<% if meth.tags(:example_request).size > 0 %>
 				<div class="examples">
-					<h4>Examples</h4>
+					<h4 class="examples">Examples</h4>
 					<% meth.tags(:example_request).each_with_index do |example_request, i| %>
 						<div class="example">
 							<% example_request_description = meth.tags(:example_request_description)[i] %>
@@ -65,7 +76,7 @@
 									<% if example_request_description.text =~ /\n/im %>
 										<%= htmlify(example_request_description.text, :markdown) %>
 									<% else %>
-										<%= example_request_description.text %>
+										<%= htmlify example_request_description.text %>
 									<% end %>
 								<% end %>
 							</span>
@@ -94,10 +105,20 @@
 									<% if example_response_description.text =~ /\n/im %>
 										<%= htmlify(example_response_description.text, :markdown) %>
 									<% else %>
-										<%= example_response_description.text %>
+										<%= htmlify example_response_description.text %>
 									<% end %>
 								<% end %>
 							</span>
+						</div>
+					<% end %>
+				</div>
+			<% end %>
+			
+			<% if meth.tags(:status_codes).size > 0 %>
+				<div class="notes">
+					<% meth.tags(:status_codes).each_with_index do |status_codes, i| %>
+						<div class="status_codes">
+							<pre><%= status_codes.text %></pre>
 						</div>
 					<% end %>
 				</div>

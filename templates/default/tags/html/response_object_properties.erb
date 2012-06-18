@@ -1,0 +1,7 @@
+<% if object.has_tag?(:resource_object_properties) %>
+  <div class="class_properties">
+    <% object.tags(:resource_object_properties).each do |tag| %>
+      <pre class="example code"><%= html_syntax_highlight(tag.text) %></pre>
+    <% end %>
+  </div>
+<% end %>

@@ -9,7 +9,7 @@
   <ul id="resources">
 	<% unless @resources.nil? %>
     	<% @resources.sort_by { |s| s.name.to_s }.each do |resource| %>
-      		<li><%= linkify(resource, resource.name.to_s.gsub(/Controller/, "")) %></li>
+      		<li><%= linkify(resource, resource.name.to_s) %></li>
     	<% end %>
     <% end %>
   </ul>

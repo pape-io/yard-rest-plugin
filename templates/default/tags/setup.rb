@@ -9,7 +9,9 @@ def init
                         :example_response,
                         :response_field,
                         :header,
-                        :response_code])
+                        :response_code,
+                        :status_codes, 
+                        :resource_object_properties])
 end
 
 def request_field
@@ -35,6 +37,7 @@ end
 def response_code
   generic_tag :response_code
 end
+
 
 def generic_tag(name, opts = {})
   return unless object.has_tag?(name)

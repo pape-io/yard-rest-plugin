@@ -4,15 +4,19 @@ module RestFilters
     list = reject_without_resource(list)
     list
   end
-
+require "awesome_print"
   def reject_without_resource(list)
-    list.delete_if { |object| 
-      if [:class].include?(object.type)
-        object.meths.detect{|x| x.has_tag? :resource}.nil?
-      else 
-        true
-      end
-    }
+    if list
+      list.delete_if { |object|
+        if object.has_tag?(:resource_object)
+          false
+        elsif object.meths.detect{ |x| x.has_tag?(:resource) }
+          false
+        else
+          true
+        end
+      }
+    end
   end
 
 end

@@ -1,5 +1,5 @@
 <% n = 1 %>
 <% @items.sort_by { |s| s.name.to_s }.each do |resource| %>
-  <li class="r<%= n %>"><%= linkify(resource, resource.name.to_s.gsub(/Controller/, "")) %></li>
+  <li class="r<%= n %>"><%= linkify(resource, resource.name.to_s) %></li>
   <% n = n == 2 ? 1 : 2 %>
 <% end %>

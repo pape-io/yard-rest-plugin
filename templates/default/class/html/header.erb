@@ -1,7 +1,24 @@
 <div class="service">
   <h1 class="noborder title"><%= options[:title] %></h1>
     <a class="back" href="<%= url_for('index.html') %>" title="back to the overview">&laquo; back to overview</a>
-    <h2><%= object.name.to_s.gsub(/Controller/,"") %></h2>
+    <h2><%= object.name.to_s %></h2>
+	<% if object.has_tag?(:resource_object_properties) %>
+	  <div class="class_properties">
+	    <% object.tags(:resource_object_properties).each do |tag| %>
+	      <pre class="code"><%= html_syntax_highlight(tag.text) %></pre>
+	    <% end %>
+	  </div>
+	<% end %>
+	<% if object.has_tag?(:resource_object_footnotes)%>
+		<div class="class_properties_footnotes">
+			<% object.tags(:resource_object_footnotes).each do |tag| %>
+				<div class="footnote">
+					<% text = tag.text%>
+					<%= htmlify(text, :markdown) %>
+				</div>
+			<% end %>
+		</div>
+	<% end %>
     <%= yieldall %>
 </div>
 

@@ -4,13 +4,24 @@
   <head>
     <%= erb(:headers) %>
 	<style type="text/css">
+		body{
+			font-size: 12px;
+		}
 		#toc {
 		  height: 100%;
-		  right: 0;
+		  left: 0;
 		  position: fixed;
 		  top: 0;
-		  width: 230px;
+		  width: 300px;
+		margin: 0;
+		max-width: none;
+		box-shadow: 2px -1px 15px rgba(0,0,0,0.5);
+		padding-top: 30px;
+		
 	  }
+	.service{
+		margin-left: 350px;
+	}
 	  #header {
 	    position: fixed;
 	    top: 0;
@@ -19,11 +30,16 @@
 	  #header #search {
 	    position: fixed;
 	    top: 0;
-	    right: 8px;
+	    left: 8px;
 	    z-index: 1001;
 	  }
+	#search_frame{
+		width: 400px;
+		border-radius: 5px;
+		position: fixed;
+		box-shadow: 0px 11px 40px rgba(0,0,0,0.5);
+	}
 	  #content {
-	    margin-right: 254px;
 	    position: relative;
 	    z-index: 1;
 	  }
@@ -34,7 +50,7 @@
 			display: block;
 			background: #EAF0FF;
 			padding: 12px;
-			line-height: 1.9em;
+			line-height: 1.3em;
 		}
 		a.back {
 			font-size: 1.2em;
@@ -67,6 +83,10 @@
 		h4 {
 			margin: 0;
 		}
+		h3.examples{
+			line-height: 1.2em;
+			font-weight: bold;
+		}
 		#resources {
 			padding: 14px 20px 52px;
 		}
@@ -78,12 +98,22 @@
 			padding-right: 14px;
 			padding-left: 12px;
 		}
-		.resource_url {
+		.resource, .url {
 			border: 1px solid white;
 			display: block;
 			background: #EAF0FF;
 			margin-top: 11px;
-			padding: 12px 12px 18px;
+			padding: 12px;
+		}
+		.url{
+			position: relative;
+		}
+		.url_method{
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			padding: 2px;
+			font-size: 10px;
 		}
 		#search_frame #search {
 			display: none;
@@ -96,29 +126,36 @@
 			padding: 12px;
 			border: 1px solid white;
 		}
-		.parameters .optional, .response_fields {
+		.parameters .optional, .response_fields, .url {
 			padding: 18px 12px 12px 12px;
 			border: 1px solid white;
 		}
 		.parameters .optional ul li, .parameters .required li, .response_fields li {
 			display: block;
-			padding: 4px 0 0 6px;
 		}
 		.parameters .optional ul li .name, .parameters .required li .name, .response_fields li .name {
 			font-weight: bold;
 		}
 		.parameters .optional ul li .text, .parameters .required li .text, .response_fields li .text {
-			display: block;
+		}
+		.parameters .optional ul li .text, 
+		.parameters .required li .text, 
+		.response_fields li .text p,
+		.parameters .required .text p{
+			display: inline;
+		}
+		.status_codes{
+			background: #eee;
+			padding: 12px;
 		}
 		.examples {
-			padding: 32px 12px 12px 12px;
+			padding: 12px;
 		}
 		.example {			
 			border-bottom: 1px solid #BBB;
 			display: block;
-			padding: 18px 0 26px;
+			padding: 0px 0 12px;
 			margin-bottom: 14px;
-			margin-top: 8px;
 		}
 		.example .description {
 			display: block;
@@ -214,7 +251,7 @@
 			    }
 			    toc.append('<li><a href="#' + this.id + '">' + $(this).text() + '</a></li>');
 			    lastTag = thisTag;
-			  });
+			  }); 
 			  if (!show) return;
 			  html = '<div id="toc"><p class="title"><a class="hide_toc" href="#"><strong>Table of Contents</strong></a> <small>(<a href="#" class="float_toc">left</a>)</small></p></div>';
 			  $('#content').prepend(html);
@@ -235,6 +272,7 @@
 			    $(this).text('left');
 			    $('#toc').toggleClass('nofloat');
 			  });
+			$("#toc ol ol ol").hide();
 			}
 			$(document).ready(function(){
 			  setup_toc();
