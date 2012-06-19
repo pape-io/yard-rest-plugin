@@ -88,6 +88,8 @@
 		}
 		h4 {
 			margin: 0;
+			font-weight: normal;
+			color: rgba(0,0,0,0.6);
 		}
 		h3.examples{
 			line-height: 1.2em;
@@ -104,21 +106,21 @@
 			padding-right: 14px;
 			padding-left: 12px;
 		}
+		.resource{
+			padding: 12px;
+		}
 		.resource, .url {
 			border: 1px solid white;
 			display: block;
 			background: #EAF0FF;
-			padding: 12px;
 		}
 		.url{
 			position: relative;
 		}
 		.url_method{
-			position: absolute;
-			left: 0px;
-			top: 0px;
-			padding: 2px;
-			font-size: 10px;
+		}
+		.url_location{
+			padding: 5px 12px 12px 12px;
 		}
 		#search_frame #search {
 			display: none;
@@ -128,20 +130,32 @@
 		}
 		.parameters .required {
 			background: #d5e1ff;
-			padding: 12px;
 			border: 1px solid white;
 		}
-		.parameters .optional, .response_fields, .url {
-			padding: 18px 12px 12px 12px;
+		.parameters .optional,
+		.parameters .required,
+		.response_fields, .url {
+			padding: 0px;
 			border: 1px solid white;
 		}
-		.parameters .optional ul li, .parameters .required li, .response_fields li {
+		.parameters .optional ul,
+		.parameters .required ul,
+		.response_fields ul{
+			padding-left: 12px;
+		}
+		.parameters .optional ul li,
+		.parameters .required li,
+		.response_fields li {
 			display: block;
 		}
-		.parameters .optional ul li .name, .parameters .required li .name, .response_fields li .name {
+		.parameters .optional ul li .name,
+		.parameters .required li .name,
+		.response_fields li .name {
 			font-weight: bold;
 		}
-		.parameters .optional ul li .text, .parameters .required li .text, .response_fields li .text {
+		.parameters .optional ul li .text,
+		.parameters .required li .text,
+		.response_fields li .text {
 		}
 		.parameters .optional ul li .text, 
 		.parameters .required li .text, 
@@ -151,7 +165,7 @@
 		}
 		.status_codes{
 			background: #eee;
-			padding: 5px;
+			padding: 5px 12px;
 		}
 		.examples {
 			padding: 12px;
@@ -164,7 +178,7 @@
 		}
 		.example .description {
 			display: block;
-			font-size: 1.2em;
+			font-size: 1em;
 			margin: 8px 0;
 		}
 		

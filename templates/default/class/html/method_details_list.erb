@@ -17,10 +17,10 @@
 			<% if meth.tags(:url).size > 0 %>
 				<% meth.tags(:url).each_with_index do |url, index| %>
 					<div class="url">
-						<div class="url_method">
+						<h4 class="url_method">
 							<% action = meth.tags(:action)[index] %>
 							<%= action.text if action %>
-						</div>
+						</h4>
 						<div class="url_location">
 							<%= url.text %>
 						</div>
