@@ -10,29 +10,29 @@ A plugin for [Yardoc](http://yardoc.org/) that generates documentation for RESTf
 
 ## Install
 Bundler will reduce your headaches, so, please you that  
-	```gem 'yard-rest' # in your gemfile```
+	gem 'yard-rest' # in your gemfile
 	
 You may need to include the following dependencies as well:
-	```gem 'redcarpet'
-	gem 'yard'```
+	gem 'redcarpet'  
+	gem 'yard'
 	
 It also requires the Jeweler gem if you plan to use the rake build tasks.
 
 You'll probably want to add these to your .gitignore as well
-	```/.yardoc/*/*
-	/.yardoc/*
-	/public/api```
+	/.yardoc/*/*  
+	/.yardoc/*  
+	/public/api
 	
 So you'll have to re-genenarte your API on every machine. This should encourage more up to dateness
 
 ## Execution
 It is recommended that you use a .yardopts file
-	```--title "My API Documentation"
-	--plugin rest
-	--readme API_README
-	--output-dir ./public/api
-	app/models/*.rb
-	app/controllers/*.rb```
+	--title "My API Documentation"  
+	--plugin rest  
+	--readme API_README  
+	--output-dir ./public/api  
+	app/models/*.rb  
+	app/controllers/*.rb
 
 So that way, whenever you want to generate your API docs, you simply need to run only
 	bundle exec yardoc
