@@ -1,58 +1,62 @@
 # Yardoc RESTful Web Service Plugin
 
-originally by [vWorkApp](http://www.vworkapp.com)
-rewritten for 0.3.0 by [rknLA](http://github.com/rknLA) with substantial help from [lsegal](http://gnuu.org/)
-customized by [spape](http://github.com/spape) for the [MAdeK](http://github.com/zhdk/madek) [API-Documentation](http://medienarchiv.zhdk.ch/api)
+originally by [vWorkApp](http://www.vworkapp.com)  
+rewritten for 0.3.0 by [rknLA](http://github.com/rknLA) with substantial help from [lsegal](http://gnuu.org/)  
+customized by [spape](http://github.com/spape) for the [MAdeK](http://github.com/zhdk/madek)
+further customization by [DerNalia](http://github.com/DerNalia) for [TinderBox](http://gettinderbox.com)
+[API-Documentation](http://medienarchiv.zhdk.ch/api)
 
 A plugin for [Yardoc](http://yardoc.org/) that generates documentation for RESTful web services. 
 
 ## Install
-    sudo gem install yard-rest
-
+Bundler will reduce your headaches, so, please you that  
+	```gem 'yard-rest' # in your gemfile```
+	
+You may need to include the following dependencies as well:
+	```gem 'redcarpet'
+	gem 'yard'```
+	
 It also requires the Jeweler gem if you plan to use the rake build tasks.
+
+You'll probably want to add these to your .gitignore as well
+	```/.yardoc/*/*
+	/.yardoc/*
+	/public/api```
+	
+So you'll have to re-genenarte your API on every machine. This should encourage more up to dateness
+
+## Execution
+It is recommended that you use a .yardopts file
+	```--title "My API Documentation"
+	--plugin rest
+	--readme API_README
+	--output-dir ./public/api
+	app/models/*.rb
+	app/controllers/*.rb```
+
+So that way, whenever you want to generate your API docs, you simply need to run only
+	bundle exec yardoc
+	
 
 ## See an API-Example
 
-[Yard-Rest-Plugin](http://spape.github.com/yard-rest-plugin) and get a look to the "Example" resource.
+[Yard-Rest-Plugin](http://DerNalia.github.com/yard-rest-plugin) and get a look to the "Example" resource.
 
 ## Demo (see the plugin in action)
 
-Visit [MAdeK-Api-Documetnation](http://medienarchiv.zhdk.ch/api) for a demonstration. Or visit ROR project [MAdeK](http://github.com/zhdk/madek) on github to see how we document our api.
-
-## Generating Docs
-
-When using yardoc you ask it to use the "rest" plugin (the --plugin option). For example: 
-
-    yardoc --plugin rest --title "Our App's API" --readme "./doc/README_FOR_API"
-
-## Publish API
-
-When you want to make the API-documentation available for public use the following command:
-
-    bundle exec yardoc --plugin rest --title 'Our App's API' --readme "./doc/README_FOR_API" --output-dir ./public/api
-
-## Gemfile functionality
-
-You may also include yard-rest in your gemfile using:
-
-    gem 'yard-rest'
-
-You may need to include the following dependencies as well:
-
-    gem 'redcarpet'
-    gem 'yard', '~>0.8.1'
-
-If you include yard-rest in your gemfile, you should generate docs using bundle exec:
-
-    bundle exec yardoc --plugin rest --title "Our App's API" --readme "./doc/README_FOR_API"
+Visit [TinderBox API Documentation](http://mytinder.com/api/) for a demonstration.
 
 ## Writing Comments
 
-In addition to starting your comment with the normal RDoc description. The following tags are provided:
+The following tags are provided:
 
-- @resource resource. Specifies the resource (URL) that the service is accessed from. This tag is compulsory, only **classes** and **methods** that include this in their comments are included in the API documentation.
+- @resource resource. Specifies the resource (controller action/method) that the service is accessed from. This tag is compulsory, only **classes** and **methods** that include this in their comments are included in the API documentation.
+
+- @url url. Specifies the URL which someone should use to access that resource.
 
 - @action action. Specifies the http action (GET, POST, PUT etc.).
+
+- @status\_codes Any possible returned states codes that the API user may need to handle.
 
 - @required [type] name description. Specifies an argument that must be passed to the service. You can specify as many of these as you need.
 
@@ -60,6 +64,11 @@ In addition to starting your comment with the normal RDoc description. The follo
 
 - @response_field [type] name description. Further specifies the fields that are returned within the response.
 
+- @resource\_object ModelName. A modal that users of the API should know about.
+
+- @resource\_object\_properties Description of the modal and attributes that the API user should know about.
+
+- @resource\_object\_footnotes Anything else that needs to be said about the model
 ### Examples
 
 Examples should always be together in the following order: example_request, example_request_description, example_response, example_response_description (as soon as you write a example_request you need a following example_response and the other way around).
@@ -88,114 +97,84 @@ Markdown rendering for the text is activated if a tags text contains a newline (
 
 ## Ignored Documentation
 
-This plugin only documents **classes** and **methods** with **@resource** tags. It does not support module documentation.
-
-The rationale here is that you are documenting external services (as represented by controllers and methods), and not internal code.
-
-Both controller *and* methods must have @resource tags to be included in documentation.
+This plugin only documents **classes** and **methods** with **@resource** or **@resource\_object** tags. It does not support module documentation. It also documents **Constants** of **@resource\_object**s that have the **@resource** tag.
 
 ## Example:
+For controllers: 
+	
+	##
+	# A thing characteristic of its kind or illustrating a general rule: 
+	# it's a good example of how European action can produce results | some of these carpets are among the finest examples of the period.
+	class ExamplesController
+	  ##
+	  # Get a collection of examples:
+	  # 
+	  # @resource index
+	  # @url /examples[ .format ]
+	  #
+	  # @action GET
+	  # 
+	  # @optional [Boolean] highlight Show only highlighted examples.
+	  #
+	  # @response_field [Array] examples The collection of examples.  
+	  #
+	  # @status_codes possible API status codes  
+	  #  404 - Not Found 
+	  #  401 - Unauthorized
+	  #  422 - Unprocessable Entity
+	  #  200 - OK
+	  # 
+	  #
+	  # @example_request {}
+	  # @example_request_description Just requests an index of samples. 
+	  # @example_response {"examples": [{"id":1, "title":"Animals", "text":"Dogs and cats are some.", "highlight":true}, {"id":2, "title":"Computers", "text":"Windows PC or Apple's Macintosh.", "highlight":false}]}
+	  # @example_response_description Responds with the index of examples.
+	  # 
+	  # @example_request {"highlight": true}
+	  # @example_request_description Request only highlighted examples.
+	  # @example_response 
+	  #   ```json
+	  #   {
+	  #     "examples": [{
+	  #       "id":1,
+	  #       "title":"Animals",
+	  #       "text":"Dogs and cats are some.",
+	  #       "highlight":true
+	  #     }]
+	  #   }
+	  #   ```
+	  # @example_response_description Responds only with highlighted examples.
+	  #
+	  def index
+	    #...
+	  end
+	end
 
-  ##
-  # A thing characteristic of its kind or illustrating a general rule: 
-  # it's a good example of how European action can produce results | some of these carpets are among the finest examples of the period.
-  #
-  class ExamplesController
-  
-    ##
-    # Get a collection of examples:
-    # 
-    # @resource /examples
-    #
-    # @action GET
-    # 
-    # @optional [Boolean] highlight Show only highlighted examples.
-    #
-    # @response_field [Array] examples The collection of examples.  
-    # @response_field [Integer] examples[].id The id of that example.
-    # @response_field [String] examples[].title The title of that example.
-    # @response_field [String] examples[].text The text of that example.
-    # @response_field [String] examples[].highlight Information if the example is highlighted.
-    #
-    # @example_request {}
-    # @example_request_description Just requests an index of samples. 
-    # @example_response {"examples": [{"id":1, "title":"Animals", "text":"Dogs and cats are some.", "highlight":true}, {"id":2, "title":"Computers", "text":"Windows PC or Apple's Macintosh.", "highlight":false}]}
-    # @example_response_description Responds with the index of examples.
-    # 
-    # @example_request {"highlight": true}
-    # @example_request_description Request only highlighted examples.
-    # @example_response 
-    #   ```json
-    #   {
-    #     "examples": [{
-    #       "id":1,
-    #       "title":"Animals",
-    #       "text":"Dogs and cats are some.",
-    #       "highlight":true
-    #     }]
-    #   }
-    #   ```
-    # @example_response_description Responds only with highlighted examples.
-    #
-    def index
-      #...
-    end
-  
-    ##
-    # Get a collection of examples:
-    # 
-    # @resource /examples/:id
-    #
-    # @action GET
-    # 
-    # @required [Integer] id The id of the example.
-    #
-    # @response_field [Integer] example.id The id of that example.
-    # @response_field [String] example.title The title of that example.
-    # @response_field [String] example.text The text of that example.
-    # @response_field [String] example.highlight Information if the example is highlighted.
-    #
-    # @example_request {"id":1}
-    # @example_request_description Just requests the example with id 1. 
-    # @example_response 
-    #   ```json
-    #   {
-    #     "example": {
-    #       "id":1,
-    #       "title":"Animals",
-    #       "text":"Dogs and cats are some.",
-    #       "highlight":true
-    #     }
-    #   }
-    #   ```
-    # @example_response_description Responds with the requested example.
-    #
-    def show
-      #...
-    end
-  
-    ##
-    # Create an example:
-    # 
-    # @resource /examples
-    #
-    # @action POST
-    # 
-    # @required [Hash] example The object of the new example.
-    # @required [String] example.title The title of the new example.
-    # @required [String] example.text The text of the new example.
-    #
-    # @optional [Boolean] example.highlight The highlight status of the new example. (Default is false)
-    #
-    # @example_request {"example": {"title":"Fish", "text": "Angel- or Butterflyfish"}}
-    # @example_resuest_description Create a new example for fish.
-    # @example_response {}
-    # @example_response_description Responds with an empty hash and status: 201 (Created).
-    #
-    def create
-      #...
-    end
-  end
+And for models:
+
+	##
+	# @resource_object ExamplesModel
+	# @resource_object_properties
+	#   ExamplesModel{
+	#     id: Integer
+	#     name: String
+	#   }
+	#
+	# @resource_object_footnotes
+	#   (1) For visibility, see {Shared}
+	class ExamplesModel
+
+	  # @resource
+	  CONSTANT_VARIABLE = 3
+
+	  # internal documentation
+	  # not picked up by yard-rest-plugin
+	  # @return something_else
+	  def something
+	    #...
+	  end
+
+	end
 
 ## Development
 
