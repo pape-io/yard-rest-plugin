@@ -11,6 +11,10 @@ def init
   end
 end
 
+def stylesheets
+  super + %w(css/custom.css)
+end
+
 def javascripts
   super + %w(js/rest_plugin.js)
 end

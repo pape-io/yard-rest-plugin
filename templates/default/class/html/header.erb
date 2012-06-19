@@ -2,6 +2,7 @@
   <h1 class="noborder title"><%= options[:title] %></h1>
     <a class="back" href="<%= url_for('index.html') %>" title="back to the overview">&laquo; back to overview</a>
     <h2><%= object.name.to_s %></h2>
+
 	<% if object.has_tag?(:resource_object_properties) %>
 	  <div class="class_properties">
 	    <% object.tags(:resource_object_properties).each do |tag| %>

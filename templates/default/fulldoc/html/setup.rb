@@ -21,3 +21,8 @@ def generate_resource_list
   @list_type = "resource"
   asset('resource_list.html', erb(:full_list))
 end
+
+def init
+  super
+  asset("css/custom.css", file("css/custom.css", true))
+end
