@@ -3,7 +3,9 @@
     <% @meths.each_with_index do |meth, i| %>
 		<div class="method">
 			<h3 class="resource"><strong><%= meth.tag(:resource).text %></strong> [<%= meth.tag(:action).text %>]</h3>
-			<p class="method_desc"><%= meth.docstring %></p>
+			<span class="method_desc">
+				<%= htmlify(meth.docstring) %>
+			</span>
 			<% if meth.tags(:url).size > 0 %>
 				<div class="url">
 					<% meth.tags(:url).each do |url| %>
@@ -116,6 +118,9 @@
 			
 			<% if meth.tags(:status_codes).size > 0 %>
 				<div class="notes">
+					<h4 class="status_title">
+						Possible Status Codes
+					</h4>
 					<% meth.tags(:status_codes).each_with_index do |status_codes, i| %>
 						<div class="status_codes">
 							<pre><%= status_codes.text %></pre>
