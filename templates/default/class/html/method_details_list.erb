@@ -2,21 +2,30 @@
   <div id="Services" class="method_details_list">
     <% @meths.each_with_index do |meth, i| %>
 		<div class="method">
-			<h3 class="resource"><strong><%= meth.tag(:resource).text %></strong> [<%= meth.tag(:action).text %>]</h3>
+			<h3 class="resource">
+				<strong>
+					<%= meth.tag(:resource).text %>
+				</strong>
+					<% if meth.tag(:action) %>
+						&nbsp;[<%= meth.tag(:action).text %>]
+					<% end %>
+			
+			</h3>
 			<span class="method_desc">
 				<%= htmlify(meth.docstring) %>
 			</span>
 			<% if meth.tags(:url).size > 0 %>
-				<div class="url">
-					<% meth.tags(:url).each do |url| %>
+				<% meth.tags(:url).each_with_index do |url, index| %>
+					<div class="url">
 						<div class="url_method">
-							<%= meth.tag(:action).text %>
+							<% action = meth.tags(:action)[index] %>
+							<%= action.text if action %>
 						</div>
 						<div class="url_location">
 							<%= url.text %>
 						</div>
-					<% end %>
-				</div>
+					</div>	
+				<% end %>
 			<% end %>
 			<div class="parameters">	
 				<% if meth.tags(:required).size > 0 %>
@@ -64,7 +73,20 @@
 					<% end %>
 				</div>
 			<% end %>
-			
+		
+			<% if meth.tags(:status_codes).size > 0 %>
+				<div class="notes">
+					<h4 class="status_title">
+						Possible Status Codes
+					</h4>
+					<% meth.tags(:status_codes).each_with_index do |status_codes, i| %>
+						<div class="status_codes">
+							<pre><%= status_codes.text %></pre>
+						</div>
+					<% end %>
+				</div>
+			<% end %>
+				
 			<% if meth.tags(:example_request).size > 0 %>
 				<div class="examples">
 					<h4 class="examples">Examples</h4>
@@ -116,18 +138,19 @@
 				</div>
 			<% end %>
 			
-			<% if meth.tags(:status_codes).size > 0 %>
-				<div class="notes">
-					<h4 class="status_title">
-						Possible Status Codes
-					</h4>
-					<% meth.tags(:status_codes).each_with_index do |status_codes, i| %>
-						<div class="status_codes">
-							<pre><%= status_codes.text %></pre>
-						</div>
-					<% end %>
-				</div>
-			<% end %>
+			
+				<% if meth.tags(:note).size > 0 %>
+					<div class="notes">
+						<h4 class="status_title">
+							Note
+						</h4>
+						<% meth.tags(:note).each do |note| %>
+							<div class="note_item">
+								<%= htmlify(note.text) %>
+							</div>
+						<% end %>
+					</div>
+				<% end %>
 		</div>	
     <% end %>
   </div>
