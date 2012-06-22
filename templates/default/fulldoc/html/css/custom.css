@@ -61,6 +61,10 @@
 		display: block;
 		border-bottom: 1px lightgray dashed;
 	}
+	.method_content{
+		display: block;
+		padding: 0px 10px 10px 10px;
+	}
 	h2 {
 		margin: 2.4em 0 0.5em;
 	}
@@ -161,7 +165,6 @@
 		padding: 5px 12px;
 	}
 	.examples {
-		padding: 12px;
 	}
 	.example {			
 		border-bottom: 1px solid #BBB;
