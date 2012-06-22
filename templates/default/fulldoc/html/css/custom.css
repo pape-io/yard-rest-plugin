@@ -150,6 +150,10 @@
 	.response_fields li .name {
 		font-weight: bold;
 	}
+	.parameters li .type,
+	.response_fields li .type{
+		font-style: italic;
+	}
 	.parameters .optional ul li .text,
 	.parameters .required li .text,
 	.response_fields li .text {
